@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label, input, button {
+  margin-bottom: 10px;
+}
+
+a {
+  display: block;
+  margin-bottom: 10px;
+}
+

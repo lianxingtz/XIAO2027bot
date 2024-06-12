@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>交易策略设置</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        color: #333333;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      .card {
+        background-color: #ffffff;
+        border: none;
+        margin-bottom: 15px;
+      }
+      .card-header {
+        background-color: #007bff;
+        color: #ffffff;
+      }
+      .form-control {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        color: #495057;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+      }
+      .btn-link {
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">交易策略设置</h1>
+      <form action="/buy_sell" method="post">
+        <div id="batches">
+          <div class="card">
+            <div class="card-header text-center">
+              交易批次 1
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="url1">Raydium文档URL</label>
+                <input type="text" id="url1" name="url1" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="amount1">单次购买金额 (lamports)</label>
+                <input type="number" id="amount1" name="amount1" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="delay_seconds1">买入延时 (秒)</label>
+                <input type="number" id="delay_seconds1" name="delay_seconds1" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="profit_ratio1">盈利比率</label>
+                <input type="number" step="0.01" id="profit_ratio1" name="profit_ratio1" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="loss_ratio1">亏损比率</label>
+                <input type="number" step="0.01" id="loss_ratio1" name="loss_ratio1" class="form-control" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-link" onclick="addBatch()">增加批次</button>
+          <button type="submit" class="btn btn-primary">启动交易机器人</button>
+        </div>
+      </form>
+      <div class="text-center mt-4">
+        <a href="/" class="btn btn-link">返回首页</a>
+      </div>
+    </div>
+
+    <script>
+      let batchCount = 1;
+      function addBatch() {
+        batchCount++;
+        const batchHtml = `
+          <div class="card">
+            <div class="card-header text-center">
+              交易批次 ${batchCount}
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="url${batchCount}">Raydium文档URL</label>
+                <input type="text" id="url${batchCount}" name="url${batchCount}" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="amount${batchCount}">单次购买金额 (lamports)</label>
+                <input type="number" id="amount${batchCount}" name="amount${batchCount}" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="delay_seconds${batchCount}">买入延时 (秒)</label>
+                <input type="number" id="delay_seconds${batchCount}" name="delay_seconds${batchCount}" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="profit_ratio${batchCount}">盈利比率</label>
+                <input type="number" step="0.01" id="profit_ratio${batchCount}" name="profit_ratio${batchCount}" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="loss_ratio${batchCount}">亏损比率</label>
+                <input type="number" step="0.01" id="loss_ratio${batchCount}" name="loss_ratio${batchCount}" class="form-control" required>
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById('batches').insertAdjacentHTML('beforeend', batchHtml);
+      }
+    </script>
+  </body>
+</html>

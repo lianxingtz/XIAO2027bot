@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>首页</title>
+    <!-- 引入Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        color: #333333;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      .card {
+        background-color: #ffffff;
+        border: none;
+        margin-bottom: 15px;
+      }
+      .card-header {
+        background-color: #007bff;
+        color: #ffffff;
+      }
+      .form-control {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        color: #495057;
+      }
+      .btn-primary, .btn-secondary, .btn-success, .btn-info, .btn-warning {
+        background-color: #007bff;
+        border: none;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+      }
+      .btn-success {
+        background-color: #28a745;
+      }
+      .btn-info {
+        background-color: #17a2b8;
+      }
+      .btn-warning {
+        background-color: #ffc107;
+      }
+      .list-group-item {
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 20px;
+      }
+      .footer {
+        margin-top: 40px;
+        text-align: center;
+        color: #6c757d;
+      }
+      .log-container {
+        margin-top: 20px;
+      }
+      .log-title {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+      .log-content {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="list-group">
+        <a href="/wallet" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">钱包管理</h5>
+          </div>
+          <p class="mb-1">创建新钱包或导入现有钱包。</p>
+        </a>
+
+        <a href="/transfer" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">转账</h5>
+          </div>
+          <p class="mb-1">在钱包之间进行转账操作。</p>
+        </a>
+
+        <a href="/buy_sell" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">买卖设置</h5>
+          </div>
+          <p class="mb-1">设置自动买卖策略。</p>
+        </a>
+
+        <a href="/show_keys" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">私钥和助记词</h5>
+          </div>
+          <p class="mb-1">查看钱包的私钥和助记词。</p>
+        </a>
+
+        <a href="/wallet_info" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">钱包信息</h5>
+          </div>
+          <p class="mb-1">查看钱包余额和持仓信息。</p>
+        </a>
+      </div>
+
+      <div class="log-container">
+        <div class="log-title">
+          <h5 class="mb-1">机器人运行日志</h5>
+        </div>
+        <div class="log-content">
+          {% for log in logs %}
+          <p>{{ log }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/" class="btn btn-link">返回首页</a>
+      </div>
+      
+      <div class="footer">
+        <p>XIAObot © 所有</p>
+      </div>
+    </div>
+
+    <!-- 引入Bootstrap JS和依赖 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

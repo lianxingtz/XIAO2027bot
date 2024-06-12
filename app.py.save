@@ -1,0 +1,82 @@
+template, redirect, url_for, flash, session
+from solana.rpc.api import Client
+from solana.keypair import Keypair
+from solana.publickey import PublicKey
+from solana.transaction import Transactio
+from solana.system_program import TransferParams, transfer
+import requests
+from bs4 import BeautifulSoup
+import time
+import socket
+from bip_utils import Bip39SeedGenerator, Bip44, Bip44Coinlask(__name__)
+app.secret_key = 'your_secret_key'
+client = Client("https://api.mainnet-beta.solana.com")
+
+# 验证Solana地址的有效性
+def is_valid_solana_address(address):
+    try
+        PublicKey(address)
+        return True
+    except:
+        return False
+
+# 从助记词生成Keypair
+def keypair_from_mnemonic(mnemoni):
+    seed_bytes = Bip39SeedGenerator(mnemonic).Generate()
+    bip44_mst_ctx = Bip44.FromSeed(seed_bytes, Bip44Coins.SOLANA)
+    bip44_acc_ctx = bip44_mst_ctx.Purpose().Coin().Account(0).Change(0).AddressIndex(0)
+    return Keypair.from_secret_key(bip44_acc_ctx.PrivateKey().Raw().ToByt
+@app.route('/wallet', methods=['GET', 'POST'])
+def wallet():
+    if request.method == 'POST':
+        action        if action == 'create'
+            new_wallet = Kesession['wallet'] = new_wallet
+            session['initial_balance'] = client.get_balance(new_wallet.public_key)['result']['value']
+            flash(f'钱包已创建，地址：{new_wallet.public_key}')
+        elif action == 'import':
+            import_key = request.form['import_key']
+           if len(import_key.split()) in [12, 24]:  # 判                imported_wallet = keypair_from_mnemonic(import_key)
+            else:  # 否则为私钥               imported_wallet = Keypair.rom_secret_key(bytes.fromhex(import_key))
+            session['wallet'] = imported_wallet
+            session['initial_balance'] = client.get_balance(imported_wallet.public_key)['result']['value']
+            flash(f'钱包已导入，地址：{imported_wallet.public_key}')
+       return redirect(url_for('index'))
+    return render_temple('wallet.html')
+#ute(' request.method == 'POST':
+        toquest.form['to_address']
+        amount = int(request.form['amount'])
+        transaction = Transaction(
+      transacion.add(
+            transfer(
+               TransferParams(
+                    from_pubkey=session['wallet'].public_key,
+                   to_pubkey=PublicKey(to_address),
+                    lamports=amount,
+              )
+    )
+        )
+      response = client.send_transaction(transaction, session['wallet'])
+        lash(f'转账成功: {response}')
+        return redirect(url_for('index'))
+ 
+# 显示私钥和助记词
+@ap/h
+def sh
+    private_key = session['wallet'].secret_key.hex()
+    seed_phrase = session['wallet'].seed.hex()  # 这里假设你有种子短语，具体实现可能需要调整
+   return render_template('show_keys.html', private_key=priading_strategy(batches):
+    log = 
+    for batch in batchs:
+        url        loss_ratio = batch['loss_ratio
+        
+       solana_addresses = collect_solana_addresses(url)
+        for address in solana_aduy_response = buy_token(address, amount, delay_seconds=delay_seconds)            log.append(f"从 {address} 买入: {buy_response}")
+            # 模拟检查盈利或亏
+       current_value = heck_current_value(address)
+         initial_value = amount
+            if (cu- initial_value) / initial_value >= profit_             sell_response = sell_token(address, amount)
+             从 {address} 卖出: {sell_response}（盈利）")
+            elif (ie - current_value) / initial_value >= loss_ratio
+                sell_response = sell_token(address, amount)
+                log.appe
+  

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>创建或导入Solana钱包</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        color: #333333;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      .card {
+        background-color: #ffffff;
+        border: none;
+        margin-bottom: 15px;
+      }
+      .card-header {
+        background-color: #007bff;
+        color: #ffffff;
+      }
+      .form-control {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        color: #495057;
+      }
+      .btn-primary, .btn-secondary, .btn-success {
+        background-color: #007bff;
+        border: none;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+      }
+      .btn-success {
+        background-color: #28a745;
+      }
+      .btn-link {
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">创建或导入Solana钱包</h1>
+      
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <!-- 创建新钱包表单 -->
+          <div class="card">
+            <div class="card-header text-center">
+              创建新钱包
+            </div>
+            <div class="card-body">
+              <form action="/wallet" method="post">
+                <input type="hidden" name="action" value="create">
+                <button type="submit" class="btn btn-primary btn-block">创建新钱包</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <!-- 导入助记词或私钥表单 -->
+          <div class="card">
+            <div class="card-header text-center">
+              导入助记词或私钥
+            </div>
+            <div class="card-body">
+              <form action="/wallet" method="post">
+                <input type="hidden" name="action" value="import">
+                <div class="form-group">
+                  <label for="import_key">助记词或私钥</label>
+                  <textarea id="import_key" name="import_key" class="form-control" rows="3" placeholder="输入助记词或私钥" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">确认导入</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-4">
+        <a href="/" class="btn btn-link">返回首页</a>
+      </div>
+      
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">提示</h5>
+          <p class="card-text">XIAO bot 不会记录您的助记词和私钥，权限用户自管，资产由你掌控。</p>
+          <p class="card-text">建议您不要直接复制粘贴助记词或私钥，以防第三方软件监控导致资产丢失。</p>
+          <p class="card-text">建议您手写输入或扫码导入您的助记词或私钥。</p>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
