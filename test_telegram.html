@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram 订阅测试</title>
+    <style>
+        body {
+            background: url('/static/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+        }
+        .messages {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .message-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .message-header time {
+            font-size: 0.9em;
+            color: #bbb;
+        }
+        .message p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram 订阅测试</h1>
+        <h2>最新消息</h2>
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message">
+                <div class="message-header">
+                    <h3>消息ID: {{ message.id }}</h3>
+                    <time>推送时间: {{ message.push_date }}</time>
+                </div>
+                <p>🟡#PUMP</p>
+                <p>代币地址: {{ message.address }}</p>
+                <p>代币名称: {{ message.name }}</p>
+                <p>代币符号: {{ message.symbol }}</p>
+                <p>持币人数: {{ message.holders }}</p>
+                <p>DEV余额: {{ message.dev_balance }}</p>
+                <p>初始池子比例: {{ message.initial_pool_ratio }}</p>
+                <p>池子(初始添加/当前): {{ message.pool_initial }}/{{ message.pool_current }}</p>
+                <p>币价: {{ message.price }}</p>
+                <p>市值(FDV): {{ message.fdv }}</p>
+                <p>市值(流通): {{ message.circulating_market_cap }}</p>
+                <p>Top20策略钱包数量: {{ message.top20_strategic_wallets }}</p>
+                <p>Top50策略钱包数量: {{ message.top50_strategic_wallets }}</p>
+                <p>Top50鲸鱼数量: {{ message.top50_whales }}</p>
+                <p>买/卖次数: {{ message.buy_sell_count }}</p>
+                <p>交易额: {{ message.transaction_volume }}</p>
+                <p>池子创建时间: {{ message.pool_creation_time }}</p>
+                <p>获取时间: {{ message.date }}</p>
+                <p>Top10持仓比例: {{ message.top10_holding_ratio }}</p>
+                <p>推特 | 网站 | 电报</p>
+                <p>币探监控: <a href="{{ message.monitor_link }}" target="_blank">{{ message.monitor_link }}</a></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

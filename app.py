@@ -1,4 +1,7 @@
-from flask import Flask, request, render_template, redirect, url_for, flash, session
+import logging
+import asyncio
+from flask import Flask, request, render_template, redirect, url_for, flash, session, jsonify
+from flask_socketio import SocketIO, emit
 from solana.rpc.api import Client
 from solana.keypair import Keypair
 from solana.publickey import PublicKey
@@ -9,11 +12,31 @@ from bs4 import BeautifulSoup
 import time
 import socket
 from bip_utils import Bip39SeedGenerator, Bip44, Bip44Coins
+from telethon.sync import TelegramClient
+from telethon import functions, types
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+socketio = SocketIO(app)
 
 client = Client("https://api.mainnet-beta.solana.com")
+
+# Telegram 配置
+telegram_api_id = '24937201'
+telegram_api_hash = 'f4095fe464700e33528dbef82c168698'
+telegram_phone_number = '+85265786847'
+telegram_client = TelegramClient('session_name', telegram_api_id, telegram_api_hash)
+
+# 保存所有订阅信息
+subscriptions_data = []
+
+# 保存全局日志
+global_logs = []
+
+# 记录日志的函数
+def log_event(message):
+    global_logs.append(message)
+    socketio.emit('update_logs', {'logs': global_logs})
 
 # 验证Solana地址的有效性
 def is_valid_solana_address(address):
@@ -46,6 +69,7 @@ def wallet():
             session['current_wallet'] = len(session['wallets']) - 1
             session['initial_balance'] = client.get_balance(new_wallet.public_key)['result']['value']
             flash(f'钱包已创建，地址：{new_wallet.public_key}')
+            log_event(f'创建新钱包，地址：{new_wallet.public_key}')
         elif action == 'import':
             import_key = request.form['import_key']
             if len(import_key.split()) in [12, 24]:  # 判断是否是助记词
@@ -61,6 +85,7 @@ def wallet():
             session['current_wallet'] = len(session['wallets']) - 1
             session['initial_balance'] = client.get_balance(imported_wallet.public_key)['result']['value']
             flash(f'钱包已导入，地址：{imported_wallet.public_key}')
+            log_event(f'导入钱包，地址：{imported_wallet.public_key}')
         return redirect(url_for('index'))
     return render_template('wallet.html')
 
@@ -84,6 +109,7 @@ def transfer():
         )
         response = client.send_transaction(transaction, from_wallet)
         flash(f'转账成功: {response}')
+        log_event(f'转账 {amount} lamports 到 {to_address}，交易ID：{response["result"]}')
         return redirect(url_for('index'))
     return render_template('transfer.html')
 
@@ -116,6 +142,7 @@ def wallet_info():
     holdings = get_holdings(wallet_address)
     wallets = session['wallets']
 
+    log_event(f'获取钱包信息，地址：{wallet_address}，余额：{current_balance}')
     return render_template('wallet_info.html', wallet_address=wallet_address, current_balance=current_balance, profit_percentage=profit_percentage, holdings=holdings, wallets=wallets)
 
 def get_holdings(wallet_address):
@@ -137,6 +164,7 @@ def switch_wallet(index):
     else:
         session['current_wallet'] = index
         flash('已切换钱包', 'success')
+        log_event(f'切换到钱包，地址：{session["wallets"][index]["public_key"]}')
     return redirect(url_for('wallet_info'))
 
 # 交易策略设置
@@ -156,8 +184,53 @@ def buy_sell():
         
         log = trading_strategy(batches)
         flash("交易机器人已启动，查看日志获取详细信息。")
+        log_event("启动交易机器人")
         return render_template('log.html', log=log)
     return render_template('buy_sell.html')
+
+# 获取 Telegram 订阅信息并显示在网页上
+@app.route('/telegram_subscriptions')
+def telegram_subscriptions():
+    return render_template('telegram_subscriptions.html')
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+    socketio.start_background_task(target=background_task)
+
+def background_task():
+    global subscriptions_data
+    while True:
+        async def get_subscriptions():
+            async with telegram_client:
+                await telegram_client.start(telegram_phone_number)
+                dialogs = await telegram_client.get_dialogs()
+                return [dialog.name for dialog in dialogs if dialog.is_channel or dialog.is_group]
+        
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        new_subscriptions = loop.run_until_complete(get_subscriptions())
+        loop.close()
+
+        if new_subscriptions:
+            subscriptions_data = new_subscriptions + subscriptions_data
+            log_event(f'更新订阅信息：{subscriptions_data[:50]}')
+            socketio.emit('update_subscriptions', {'subscriptions': subscriptions_data[:50]})
+        socketio.sleep(5)
+
+@app.route('/api/telegram_subscriptions')
+def api_telegram_subscriptions():
+    start = int(request.args.get('start', 0))
+    end = int(request.args.get('end', 50))
+    return jsonify(subscriptions_data[start:end])
+
+@app.route('/global_logs')
+def global_logs_page():
+    return render_template('global_logs.html', logs=global_logs)
+
+@socketio.on('fetch_logs')
+def handle_fetch_logs():
+    emit('update_logs', {'logs': global_logs})
 
 @app.route('/')
 def index():
@@ -176,4 +249,4 @@ if __name__ == '__main__':
     local_ip = socket.gethostbyname(hostname)
     port = 5000
     print(f"应用已启动，可以通过以下链接访问：http://{local_ip}:{port}")
-    app.run(host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=port)

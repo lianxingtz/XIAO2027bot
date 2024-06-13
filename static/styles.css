@@ -1,28 +1,53 @@
 body {
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    background: url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%;
 }
 
-h1 {
-  text-align: center;
+h1, h2 {
+    margin: 0 0 20px 0;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-label, input, button {
-  margin-bottom: 10px;
+.message-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
 }
 
-a {
-  display: block;
-  margin-bottom: 10px;
+.message-box p {
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+
+.message-box a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.message-box a:hover {
+    text-decoration: underline;
 }
 

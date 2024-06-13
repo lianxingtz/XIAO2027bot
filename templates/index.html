@@ -114,6 +114,20 @@
           </div>
           <p class="mb-1">查看钱包余额和持仓信息。</p>
         </a>
+
+        <a href="/telegram_subscriptions" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Telegram 订阅信息</h5>
+          </div>
+          <p class="mb-1">查看最新的 Telegram 订阅信息。</p>
+        </a>
+
+        <a href="/global_logs" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">全局日志</h5>
+          </div>
+          <p class="mb-1">查看所有功能的运行状态和日志信息。</p>
+        </a>
       </div>
 
       <div class="log-container">
@@ -140,5 +154,18 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- 引入Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('update_subscriptions', function(data) {
+        var subscriptions = data.data;
+        var content = '';
+        subscriptions.forEach(function(subscription) {
+          content += '<p>' + subscription.name + ' - ' + subscription.id + '</p>';
+        });
+        document.querySelector('.log-content').innerHTML = content;
+      });
+    </script>
   </body>
 </html>
